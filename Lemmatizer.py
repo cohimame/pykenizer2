@@ -54,8 +54,7 @@ if __name__ == "__main__":
   text = u"Кто-нибудь, позвоните Ёжи зачем-либо, щекотно-с кому-то\n"
   norm      = Normalizer.normalize(text)
 
-  print "input: " + text  
-  print u"mystem output: " + Io.list_to_string(mystem.lemmatize(text))
+  print "input: " + text
   print u"mystem output: " + Io.list_to_string(mystem.lemmatize(norm))
 
   print u"pymorphy output: " + Io.list_to_string(pymorpher.lemmatize(text))

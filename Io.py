@@ -1,8 +1,5 @@
 # -*- coding: utf-8 -*-
-import os
 import codecs
-import re
-import csv
 
 def read(f):
   doc = codecs.open(f,encoding='utf-8')
@@ -10,7 +7,7 @@ def read(f):
   doc.close()
   return text
 
-def write(poems,dest):
+def write(poems, dest):
   output = codecs.open(dest, mode='w',encoding='utf-8')
   for poem in poems:
     output.write(poem)
