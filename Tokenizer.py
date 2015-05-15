@@ -3,6 +3,7 @@ import StopWords
 import PoemHTMLParser
 import Normalizer
 import Lemmatizer
+import PosTagger
 import Io
 
 stopwords = StopWords.collect_stopwords()
@@ -34,18 +35,36 @@ def lemmatize(poem_file):
   return result
 
 
+def tagging(poem_file):
+  result = []
+  poems  = PoemHTMLParser.extract_poems(poem_file)
+  for poem in poems:
+    npoem   = Normalizer.normalize(poem)
+    tagged  = PosTagger.postag(npoem)
+    #print(tagged)
+    nonstop = [w for w in tagged if w.split('_')[0] not in stopwords]      
+    if nonstop:
+      p = ' '.join(nonstop)+'\n'
+      result.append(p)
+  return result
+
+
+
 if __name__ == "__main__":
   INPUT  = "test_input/corpora/A_Klin"
   OUTPUT_LEM = "test_output/lemmatized/A_Klin_lem"
   OUTPUT_TOK = "test_output/lemmatized/A_Klin_tok"
+  OUTPUT_POS = "test_output/lemmatized/A_Klin_pos"
 
-  print (stopwords)
+  
 
   poems = Io.read(INPUT)
 
-  tokenized_poems  = tokenize(poems)
-  lemmatized_poems = lemmatize(poems)
+  #tokenized_poems  = tokenize(poems)
+  #lemmatized_poems = lemmatize(poems)
+  postagged_poems  = tagging(poems)
 
-  Io.write(lemmatized_poems,OUTPUT_LEM)
-  Io.write(tokenized_poems,OUTPUT_TOK)
+  #Io.write(lemmatized_poems,OUTPUT_LEM)
+  #Io.write(tokenized_poems,OUTPUT_TOK)
+  Io.write(postagged_poems,OUTPUT_POS)
 
