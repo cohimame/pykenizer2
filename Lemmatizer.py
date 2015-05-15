@@ -1,62 +1,27 @@
 # -*- coding: utf-8 -*-
-import pymorphy2
 import subprocess
 import re
 import Io
+from pprint import pprint as pp
 
-class ILemmatizer:
-  def __init__(self):
-    pass
-  def __repr__(self):
-    return "abstract lemmatizer does nothing"  
-  def lemmatize(self, t):
-    pass
+brackets = re.compile(u"}{")
+uncertainty = re.compile(u"(\?*\|[а-яё?]+|\?*)")
 
-class FastYaLemmatizer(ILemmatizer):
-  brackets = re.compile(u"}{")
-  uncertainty = re.compile(u"(\?*\|[а-яё?]+|\?*)")
+def lemmatize(string):
+  def parse(text):
+    first = re.sub(brackets, u' ', text[1:-1])
+    then  = re.sub(uncertainty, u'', first)
+    return then.split()
 
-  def __init__(self):
-    self.args = ("mystem","-l","tmpin","tmpout" )
+  args = ("mystem","-l","tmpin","tmpout" )
+  Io.write(string, args[2])
+  subprocess.call(args,shell=True)
 
-  def __repr__(self):
-    return "pymystem3 lemmatizer"
+  return parse(Io.read(args[3]))
 
-  def lemmatize(self, text):
-    def parse(t):
-      first = re.sub(self.brackets, u' ', t[1:-1])
-      then  = re.sub(self.uncertainty, u'', first)
-      return then.split()
-
-    Io.write(text, self.args[2])
-    subprocess.call(self.args,shell=True)
-    return parse(Io.read(self.args[3]))
-
-class PyMorphyLemmatizer(ILemmatizer):
-  def __init__(self):
-    self.morph = pymorphy2.MorphAnalyzer()
-
-  def __repr__(self):
-    return "pymorphy2 lemmatizer"
-
-  def lemmatize(self, text):
-    nf = lambda x: self.morph.parse(x)[0].normal_form
-    tokens = text.split()
-    lemmas = [nf(t) for t in tokens]
-    return lemmas
 
 if __name__ == "__main__":
-  import Normalizer
-
-  mystem = FastYaLemmatizer()
-  pymorpher = PyMorphyLemmatizer()
-  
-  text = u"Кто-нибудь, позвоните Ёжи зачем-либо, щекотно-с кому-то\n"
-  norm      = Normalizer.normalize(text)
-
-  print "input: " + text
-  print u"mystem output: " + Io.list_to_string(mystem.lemmatize(norm))
-
-  print u"pymorphy output: " + Io.list_to_string(pymorpher.lemmatize(text))
-  print u"pymorphy output: " + Io.list_to_string(pymorpher.lemmatize(norm))
-
+  text = u"Кто-нибудь, из aalto позвоните Ёжи зачем-либо, щекотно-с кому-то ха-ха-ха-ха!\n"
+  print(text)
+  result = lemmatize(text)
+  pp(result)

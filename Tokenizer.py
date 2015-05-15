@@ -2,54 +2,50 @@
 import StopWords
 import PoemHTMLParser
 import Normalizer
-from Lemmatizer import FastYaLemmatizer
-
-'''
-  Токенизатор — инструмент для автоматического разделения текста на токены - 
-  - цепочки символов, которые мы хотим считать минимальными линейными 
-  единицами текста. 
-
-  Задача данного токенизатора - подготовить корпус поэзии к подаче 
-  на вход некоторым программам topic modeling.
-
-  Токенизатор считает токеном последовательность символов русского
-  алфавита, возможно, разделенную произвольным числом дефисов.
-  Например: "когда-нибудь", "рок-н-ролл", "ха-ха-ха-ха".
- 
-  Так же токенизатор:
-    1. "знает" структуру файлов корпуса поэзии
-    2. рассматривает последовательности, длина которых строго больше единицы.
-    3. делает lowercase
-    4. берет на себя задачу по замене "ё" на "е".  
-    5. устраняет стоп слова.
-  
-'''
+import Lemmatizer
+import Io
 
 stopwords = StopWords.collect_stopwords()
 
-lemmatizer = FastYaLemmatizer()
 
 def tokenize(poem_file):
   result = []
   poems  = PoemHTMLParser.extract_poems(poem_file)
   for poem in poems:
     npoem   = Normalizer.normalize(poem)
-    lemmas   = lemmatizer.lemmatize(npoem)
+    tokens  = npoem.split()
+    nonstop = [w for w in tokens if w not in stopwords]
+    if nonstop:
+      p = ' '.join(nonstop)+'\n'
+      result.append(p)
+  return result
+
+
+def lemmatize(poem_file):
+  result = []
+  poems  = PoemHTMLParser.extract_poems(poem_file)
+  for poem in poems:
+    npoem   = Normalizer.normalize(poem)
+    lemmas  = Lemmatizer.lemmatize(npoem)
     nonstop = [w for w in lemmas if w not in stopwords]
     if nonstop:
-      p = u' '.join(nonstop)+u'\n'
+      p = ' '.join(nonstop)+'\n'
       result.append(p)
   return result
 
 
 if __name__ == "__main__":
-  import Io
   INPUT  = "test_input/corpora/A_Klin"
-  OUTPUT = "test_output/lemmatized/A_Klin"
+  OUTPUT_LEM = "test_output/lemmatized/A_Klin_lem"
+  OUTPUT_TOK = "test_output/lemmatized/A_Klin_tok"
+
+  print (stopwords)
 
   poems = Io.read(INPUT)
 
-  lemmatized_poems = tokenize(poems)
+  tokenized_poems  = tokenize(poems)
+  lemmatized_poems = lemmatize(poems)
 
-  Io.write(lemmatized_poems,OUTPUT)
+  Io.write(lemmatized_poems,OUTPUT_LEM)
+  Io.write(tokenized_poems,OUTPUT_TOK)
 

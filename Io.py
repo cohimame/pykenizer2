@@ -1,17 +1,14 @@
 # -*- coding: utf-8 -*-
-import codecs
 
-def read(f):
-  doc = codecs.open(f,encoding='utf-8')
-  text = doc.read()
-  doc.close()
+def read(input):
+  with open(input,encoding='utf-8') as infile:
+    text = infile.read()
   return text
 
-def write(poems, dest):
-  output = codecs.open(dest, mode='w',encoding='utf-8')
-  for poem in poems:
-    output.write(poem)
-  output.close()
-
+def write(poems, output):
+  with open(output,mode='w',encoding='utf-8') as outfile:		
+    for poem in poems:
+      outfile.write(poem)   	
+  
 def list_to_string(lisp, sep = u', '):
     return u"[{}]".format(sep.join(lisp))

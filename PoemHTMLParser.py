@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
-from HTMLParser import HTMLParser
+from html.parser import HTMLParser
 
 class PoemHTMLParser(HTMLParser):
   def __init__(self):
+    super(PoemHTMLParser, self).__init__(convert_charrefs=True)
     self.reset()      
     self.poems = []    
 
