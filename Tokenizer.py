@@ -6,7 +6,11 @@ import Lemmatizer
 import PosTagger
 import Io
 
-stopwords = StopWords.collect_stopwords()
+stopwords = StopWords.extract()
+
+"""
+На выбор три 
+"""
 
 
 def tokenize(poem_file):
@@ -16,38 +20,38 @@ def tokenize(poem_file):
     npoem   = Normalizer.normalize(poem)
     tokens  = npoem.split()
     nonstop = [w for w in tokens if w not in stopwords]
-    if nonstop:
+    if len(nonstop)>4:
       p = ' '.join(nonstop)+'\n'
       result.append(p)
   return result
 
+"""
+  def lemmatize(poem_file):
+    result = []
+    poems  = PoemHTMLParser.extract_poems(poem_file)
+    for poem in poems:
+      npoem   = Normalizer.normalize(poem)
+      lemmas  = Lemmatizer.lemmatize(npoem)
+      nonstop = [w for w in lemmas if w not in stopwords]
+      if nonstop:
+        p = ' '.join(nonstop)+'\n'
+        result.append(p)
+    return result
 
-def lemmatize(poem_file):
-  result = []
-  poems  = PoemHTMLParser.extract_poems(poem_file)
-  for poem in poems:
-    npoem   = Normalizer.normalize(poem)
-    lemmas  = Lemmatizer.lemmatize(npoem)
-    nonstop = [w for w in lemmas if w not in stopwords]
-    if nonstop:
-      p = ' '.join(nonstop)+'\n'
-      result.append(p)
-  return result
 
-
-def tagging(poem_file):
-  result = []
-  poems  = PoemHTMLParser.extract_poems(poem_file)
-  for poem in poems:
-    npoem   = Normalizer.normalize(poem)
-    tagged  = PosTagger.postag(npoem)
-    #print(tagged)
-    nonstop = [w for w in tagged if w.split('_')[0] not in stopwords]      
-    if nonstop:
-      p = ' '.join(nonstop)+'\n'
-      result.append(p)
-  return result
-
+  def tagging(poem_file):
+    result = []
+    poems  = PoemHTMLParser.extract_poems(poem_file)
+    for poem in poems:
+      npoem   = Normalizer.normalize(poem)
+      tagged  = PosTagger.postag(npoem)
+      #print(tagged)
+      nonstop = [w for w in tagged if w.split('_')[0] not in stopwords]      
+      if nonstop:
+        p = ' '.join(nonstop)+'\n'
+        result.append(p)
+    return result
+"""
 
 
 if __name__ == "__main__":
@@ -58,13 +62,13 @@ if __name__ == "__main__":
 
   
 
-  poems = Io.read(INPUT)
+  #poems = Io.read(INPUT)
 
   #tokenized_poems  = tokenize(poems)
   #lemmatized_poems = lemmatize(poems)
-  postagged_poems  = tagging(poems)
+  #postagged_poems  = tagging(poems)
 
   #Io.write(lemmatized_poems,OUTPUT_LEM)
   #Io.write(tokenized_poems,OUTPUT_TOK)
-  Io.write(postagged_poems,OUTPUT_POS)
+  #Io.write(postagged_poems,OUTPUT_POS)
 

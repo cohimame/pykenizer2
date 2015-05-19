@@ -1,55 +1,43 @@
 # -*- coding: utf-8 -*-
-import os
-import codecs
-#--------------------
-import Io
-import Tokenizer
-import CorporaStatistics
 
-def dir_tokenize_one_file(raw,dest):
-  output = codecs.open(dest, mode='w',encoding='utf-8')
-  for author in os.listdir(raw):
-    poem_file  = Io.read(raw+author)
-    norm_poems = Tokenizer.tokenize(poem_file)
-    for poem in norm_poems:
-      output.write(poem)
-  output.close()
-
-def dir_tokenize(inp,outp):
-  author_list = os.listdir(inp)
-  for author in author_list:
-    file_tokenize(inp+author, outp+author)
-
-def file_tokenize(inp, outp):
-  poem_file = Io.read(inp)
-  norm_poems = Tokenizer.tokenize(poem_file)
-  Io.write(norm_poems, outp)
+import Shuffling
+import Hypothesis
 
 
-if __name__ == "__main__":
+ROOT = "E:/topic_modeling/may_hypothesis_dataset/input/"
+OUTPUT = "output/"
 
-  INPUT  = "input/"
-  OUTPUT = "output/"
-  ISPTM  = OUTPUT + "summary.txt"
-  STATISTICS  = "output/statistics/"
-
-  print "normalizing texts from \"{0}\"\n".format(INPUT)
-
-  dir_tokenize_one_file(INPUT,ISPTM)
-
-  print "saving in \"{0}\"\n".format(ISPTM)
 
 """
-  print "lemmatizing texts from \"" + TOKENOUTPUT + "\"\n" 
-  dir_lemmatize_one_file(TOKENOUTPUT,LEMMAOUTPUT)
-  print "saving in " + LEMMAOUTPUT + "\n"
-
-  print "processing corpora statistics"
-  wrdfrq,hyphfrq = CorporaStatistics.count_stats(LEMMAOUTPUT)  
-
-  print "saving corpora statistics"
-  CorporaStatistics.save_stats(LEMMASTATS+"/total.txt", wrdfrq)
-  CorporaStatistics.save_stats(LEMMASTATS+"/hyphen.txt",hyphfrq)
-  print "done"
+  Разбиваем все файлы в папке root
+  на три случайных непересекающихся списка  
+"""
+random_datasets = Shuffling.random_partition(root)
 
 """
+  Формируем названия файлов на которых 
+  будет происходить проверка гипотез.
+"""
+batches = form_batches(random_datasets,output)
+
+"""
+  вход: batch1 - список пар (имя_i, список файлов_i) 
+  выход: по файлу "имя_i" на каждый кортеж в списке,
+         каждый файл содержит в себе токенизированные поэмы,
+         извлеченные из "список файлов_i" в формате 
+         одна строка - одна нормализованная поэма
+"""
+batch1 = batches[0] 
+hypothesis1(batch1)
+
+"""
+  вход: batch2 - список пар (имя_лемм_i, имя_токен_i)
+        где имя_токен_i - имя токенизированного файла, 
+                          подготовленного выше
+            имя_лемм_i  - имя лемматизированного файла             
+
+  выход: по файлу "имя_лемм_i" на каждый "имя_токен_i" в списке,
+         в формате одна строка - одна лемматизированная поэма 
+"""
+batch2 = batches[0]
+hypothesis2(batch2)

@@ -10,5 +10,3 @@ def write(poems, output):
     for poem in poems:
       outfile.write(poem)   	
   
-def list_to_string(lisp, sep = u', '):
-    return u"[{}]".format(sep.join(lisp))
