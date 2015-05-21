@@ -4,6 +4,7 @@
 /poetry_normalized/*
 /corpora_statistics/*
 /poetry_raw/*
+/test_output/*
 /*.pyc
 /.idea
 /*.iml

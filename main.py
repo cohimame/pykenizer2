@@ -1,24 +1,26 @@
 # -*- coding: utf-8 -*-
-
 import Shuffling
 import Hypothesis
 
-
-ROOT = "E:/topic_modeling/may_hypothesis_dataset/input/"
-OUTPUT = "output/"
-
+SOURCE = "D:\\poetry\\"
+OUTPUT = "output\\"
 
 """
-  Разбиваем все файлы в папке root
-  на три случайных непересекающихся списка  
+  Из файлов в папке SOURCE сэмплируем
+  три случайных непересекающихся списка  
 """
-random_datasets = Shuffling.random_partition(root)
+PARTS = 3
+SIZE  = 4200
+random_datasets = Shuffling.random_partition(SOURCE,PARTS,SIZE)
 
 """
   Формируем названия файлов на которых 
   будет происходить проверка гипотез.
 """
-batches = form_batches(random_datasets,output)
+batches = Hypothesis.form_batches(random_datasets,OUTPUT)
+
+
+print("done forming batches")
 
 """
   вход: batch1 - список пар (имя_i, список файлов_i) 
@@ -28,7 +30,7 @@ batches = form_batches(random_datasets,output)
          одна строка - одна нормализованная поэма
 """
 batch1 = batches[0] 
-hypothesis1(batch1)
+Hypothesis.hypothesis1(batch1)
 
 """
   вход: batch2 - список пар (имя_лемм_i, имя_токен_i)
@@ -38,6 +40,8 @@ hypothesis1(batch1)
 
   выход: по файлу "имя_лемм_i" на каждый "имя_токен_i" в списке,
          в формате одна строка - одна лемматизированная поэма 
+
+
 """
-batch2 = batches[0]
-hypothesis2(batch2)
+batch2 = batches[1]
+Hypothesis.hypothesis2(batch2)
