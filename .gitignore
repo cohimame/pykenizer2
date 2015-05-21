@@ -1,9 +1,10 @@
 /*.pyc
+/output/*
+/input/*
 /poetry_normalized/*
 /corpora_statistics/*
 /poetry_raw/*
-/stopwordtest/*
-/summary
 /*.pyc
 /.idea
 /*.iml
+/__pycache__/*
