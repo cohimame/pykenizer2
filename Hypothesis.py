@@ -6,9 +6,6 @@ import Tokenizer
 import subprocess
 
 
-
-#random_datasets = Shuffling.random_partition(root)
-
 """
   Формируем названия файлов на которых 
   будет происходить проверка гипотез.
@@ -40,6 +37,7 @@ def hypothesis1(batch1):
           outfile.write(poem) 
    
   for (name, part) in batch1:  
+    print(name, part)
     tok(name, part)
 
 
@@ -91,13 +89,18 @@ def hypothesis2(batch2):
 
 
 if __name__ == "__main__":
-  TEST_ROOT = "test_input/corpora/"
-  TEST_OUT  = "test_output/"
-
-  random_datasets = Shuffling.random_partition(TEST_ROOT)
+  TEST_ROOT = "test_input\\tree\\"
+  TEST_OUT  = "test_output\\"
+  NUMBER = 4
+  SIZE = 3
+  random_datasets = Shuffling.random_partition(TEST_ROOT,NUMBER,SIZE)
 
   test_batch1, test_batch2 = form_batches(random_datasets,TEST_OUT)
 
-  hypothesis1(test_batch1)
+  #pprint(list(test_batch1))
+
+  hypothesis1(list(test_batch1))
+
+  #pprint(list(test_batch2))
 
   hypothesis2(test_batch2)
