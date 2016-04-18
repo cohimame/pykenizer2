@@ -4,9 +4,12 @@ This repo contains text preprocessing glue code for
 Digital Humanities and Infographics course projects.
 
 
-
 + [Infographics course work report](http://project9576.tilda.ws/)
 + [Digital Humanities course work report](report.pdf)
+
+
+![alt text](topics.png "poetry topic models")
+
 
 
 Modern Russian Poetry clustering via Topic Modeling
