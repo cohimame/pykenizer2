@@ -1,12 +1,17 @@
+Modern Russian Poetry clustering via Topic Modeling
+--
 This repo contains text preprocessing glue code for 
-topic modeling course project.
---
+Digital Humanities and Infographics course projects.
 
-[Course work itself](report.pdf)
 
---
+
++ [Infographics course work report](http://project9576.tilda.ws/)
++ [Digital Humanities course work report](report.pdf)
+
+
 Modern Russian Poetry clustering via Topic Modeling
 was made with:
-1. http://nlp.stanford.edu/software/tmt/tmt-0.4/
-2. https://tech.yandex.ru/mystem/
+
++ http://nlp.stanford.edu/software/tmt/tmt-0.4/
++ https://tech.yandex.ru/mystem/
 
