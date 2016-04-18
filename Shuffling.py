@@ -29,10 +29,10 @@ def random_poets(poets, n):
   return list(result)
   
 def poets(root):
-  poets = [
-  os.path.join(path, name)
-    for path, subdirs, files in os.walk(root)
-      for name in files]
+  poets = [ os.path.join(path, name)
+              for path, subdirs, files in os.walk(root)
+                for name in files
+                ]
   return poets 
 
 
